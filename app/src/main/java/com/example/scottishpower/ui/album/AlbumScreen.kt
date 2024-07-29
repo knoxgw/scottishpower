@@ -12,6 +12,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -49,8 +50,39 @@ fun NavGraphBuilder.albumScreen() {
                 }
 
                 is State.Success -> {
-                    AlbumList((albumListState as State.Success<List<AlbumEntity>>).contents)
+                    Column {
+                        SortBar {
+                            albumViewModel.setSortType(it)
+                        }
+                        AlbumList((albumListState as State.Success<List<AlbumEntity>>).contents)
+                    }
                 }
+            }
+        }
+    }
+}
+
+@Composable
+private fun SortBar(sortCallback: (SortType) -> Unit) {
+    // todo icons here, indicate selected sort
+    Column {
+        Text(text = "Sort by:")
+        Row {
+            Text(text = "Username")
+            TextButton(onClick = { sortCallback.invoke(SortType.Username(ascending = true)) }) {
+                Text(text = "Ascending")
+            }
+            TextButton(onClick = { sortCallback.invoke(SortType.Username(ascending = false)) }) {
+                Text(text = "Descending")
+            }
+        }
+        Row {
+            Text(text = "Album title")
+            TextButton(onClick = { sortCallback.invoke(SortType.Title(ascending = true)) }) {
+                Text(text = "Ascending")
+            }
+            TextButton(onClick = { sortCallback.invoke(SortType.Title(ascending = false)) }) {
+                Text(text = "Descending")
             }
         }
     }
