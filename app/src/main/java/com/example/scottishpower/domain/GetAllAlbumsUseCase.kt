@@ -19,6 +19,7 @@ class GetAllAlbumsUseCase @Inject constructor(
         placeholderRepository.getAllAlbums().map { album ->
                 AlbumEntity(
                     album.id,
+                    album.userId,
                     album.title,
                     placeholderRepository.getUserById(album.userId.toString()).first().username,
                     placeholderRepository.getAlbumPhotosById(album.id.toString())

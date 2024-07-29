@@ -1,4 +1,4 @@
-package com.example.scottishpower.ui.album
+package com.example.scottishpower.ui.albumlist
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AlbumViewModel @Inject constructor(
+class AlbumListViewModel @Inject constructor(
     application: Application,
     private val getAllAlbums: GetAllAlbumsUseCase
 ) : AndroidViewModel(application) {

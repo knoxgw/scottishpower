@@ -11,6 +11,9 @@ interface PlaceholderApi {
     @GET("albums")
     fun getAllAlbums(): Call<List<AlbumDTO>>
 
+    @GET("albums")
+    fun getAlbumById(@Query("id") albumId: String): Call<List<AlbumDTO>>
+
     @GET("users")
     fun getUserById(@Query("id") userId: String): Call<List<UserDTO>>
 

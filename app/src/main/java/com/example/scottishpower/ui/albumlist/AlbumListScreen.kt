@@ -1,4 +1,4 @@
-package com.example.scottishpower.ui.album
+package com.example.scottishpower.ui.albumlist
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,38 +23,37 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import coil.compose.AsyncImage
-import com.example.scottishpower.data.dto.AlbumDTO
 import com.example.scottishpower.data.entity.AlbumEntity
 import com.example.scottishpower.util.State
 
-const val ALBUM_ROUTE = "album_route"
+const val ALBUM_LIST_ROUTE = "album_list_route"
 
-fun NavController.navigateToAlbum() {
-    navigate(ALBUM_ROUTE)
+fun NavController.navigateToAlbumList() {
+    navigate(ALBUM_LIST_ROUTE)
 }
 
-fun NavGraphBuilder.albumScreen() {
-    composable(ALBUM_ROUTE) {
+fun NavGraphBuilder.albumListScreen(navigateToDetail: (Int) -> Unit) {
+    composable(ALBUM_LIST_ROUTE) {
         Box(modifier = Modifier.padding(8.dp, 8.dp)) {
-            val albumViewModel: AlbumViewModel = hiltViewModel()
+            val albumListViewModel: AlbumListViewModel = hiltViewModel()
 
-            val albumListState by albumViewModel.albumListState.collectAsState()
+            val albumListState by albumListViewModel.albumListState.collectAsState()
 
             when (albumListState) {
                 is State.Error -> {
                     Text("Error")
                 }
 
-                State.Loading -> {
+                is State.Loading -> {
                     Text("Loading")
                 }
 
                 is State.Success -> {
                     Column {
                         SortBar {
-                            albumViewModel.setSortType(it)
+                            albumListViewModel.setSortType(it)
                         }
-                        AlbumList((albumListState as State.Success<List<AlbumEntity>>).contents)
+                        AlbumList((albumListState as State.Success<List<AlbumEntity>>).contents, navigateToDetail)
                     }
                 }
             }
@@ -89,20 +88,21 @@ private fun SortBar(sortCallback: (SortType) -> Unit) {
 }
 
 @Composable
-private fun AlbumList(albums: List<AlbumEntity>) {
+private fun AlbumList(albums: List<AlbumEntity>, navigateToDetail: (Int) -> Unit) {
     LazyColumn {
-        items(albums, itemContent = { AlbumItem(album = it) })
+        items(albums, itemContent = { AlbumItem(album = it, navigateToDetail) })
     }
 }
 
 @Composable
-private fun AlbumItem(album: AlbumEntity) {
+private fun AlbumItem(album: AlbumEntity, navigateToDetail: (Int) -> Unit) {
     Card(
         modifier = Modifier
             .padding(horizontal = 8.dp, vertical = 8.dp)
             .fillMaxWidth(),
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
-        shape = RoundedCornerShape(corner = CornerSize(16.dp))
+        shape = RoundedCornerShape(corner = CornerSize(16.dp)),
+        onClick = {navigateToDetail.invoke(album.albumId)}
     ) {
         Row {
             AsyncImage(model = album.thumbnailUrl, contentDescription = null)

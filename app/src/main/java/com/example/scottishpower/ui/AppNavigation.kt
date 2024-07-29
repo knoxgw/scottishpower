@@ -7,20 +7,22 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.example.scottishpower.MainActivity
-import com.example.scottishpower.ui.album.ALBUM_ROUTE
-import com.example.scottishpower.ui.album.albumScreen
+import com.example.scottishpower.ui.albumdetail.albumDetailScreen
+import com.example.scottishpower.ui.albumdetail.navigateToAlbumDetail
+import com.example.scottishpower.ui.albumlist.ALBUM_LIST_ROUTE
+import com.example.scottishpower.ui.albumlist.albumListScreen
 
 @Composable
 fun AppNavigation(
-    navController: NavHostController,
-    activity: MainActivity
+    navController: NavHostController
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         NavHost(
             navController = navController,
-            startDestination = ALBUM_ROUTE,
+            startDestination = ALBUM_LIST_ROUTE,
         ) {
-            albumScreen()
+            albumListScreen { navController.navigateToAlbumDetail(it) }
+            albumDetailScreen()
         }
     }
 }

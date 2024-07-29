@@ -27,8 +27,7 @@ class MainActivity : ComponentActivity() {
                 val navController = rememberNavController()
                 Scaffold(modifier = Modifier.fillMaxSize(), content = {
                     AppNavigation(
-                        navController = navController,
-                        activity = this
+                        navController = navController
                     )
                 })
             }

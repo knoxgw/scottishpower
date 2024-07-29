@@ -1,4 +1,4 @@
-package com.example.scottishpower.ui.album
+package com.example.scottishpower.ui.albumlist
 
 sealed class SortType(val ascending: Boolean) {
     class Username(ascending: Boolean): SortType(ascending)

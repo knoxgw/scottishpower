@@ -25,6 +25,11 @@ class PlaceholderRepository @Inject constructor(private val api: PlaceholderApi)
         return executeCall(api.getPhotosByAlbum(albumId))
     }
 
+    fun getAlbumById(albumId: String): List<AlbumDTO> {
+        Log.d(TAG, "Fetching album $albumId")
+        return executeCall(api.getAlbumById(albumId))
+    }
+
     private fun <T> executeCall(call: Call<out T>): T {
         val response = call.execute()
 
