@@ -18,8 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AlbumViewModel @Inject constructor(
     application: Application,
-    private val getAllAlbums: GetAllAlbumsUseCase,
-    @IoDispatcher private val dispatcher: CoroutineDispatcher
+    private val getAllAlbums: GetAllAlbumsUseCase
 ) : AndroidViewModel(application) {
 
     private val _albumListState = MutableStateFlow<State<List<AlbumDTO>>>(State.Loading)
@@ -30,7 +29,7 @@ class AlbumViewModel @Inject constructor(
     }
 
     private fun retrieveAlbums() {
-        viewModelScope.launch(dispatcher) {
+        viewModelScope.launch {
             try {
                 _albumListState.value = State.Success(getAllAlbums.invoke())
             } catch (exception: Exception) {

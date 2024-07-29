@@ -3,30 +3,31 @@ package com.example.scottishpower.data.repositories
 import android.util.Log
 import com.example.scottishpower.data.dto.AlbumDTO
 import com.example.scottishpower.data.repositories.api.PlaceholderApi
-import com.example.scottishpower.di.IoDispatcher
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.withContext
+import retrofit2.Call
 import javax.inject.Inject
 
 // todo better exception handling here
-class PlaceholderRepository @Inject constructor(private val api: PlaceholderApi, @IoDispatcher private val dispatcher: CoroutineDispatcher) {
-    suspend fun getAllAlbums(): List<AlbumDTO> = withContext(dispatcher) {
-        Log.d(TAG, "Retrieving all albums")
-        val response = api.getAllAlbums().execute()
+class PlaceholderRepository @Inject constructor(private val api: PlaceholderApi) {
+    suspend fun getAllAlbums(): List<AlbumDTO> {
+        return executeCall(api.getAllAlbums())
+    }
+
+    private suspend fun <T> executeCall(call: Call<out T>): T {
+        val response = call.execute()
 
         if (!response.isSuccessful) {
             Log.w(TAG, "${response.errorBody()}")
-            throw Exception("API error")
+            throw Exception(response.message())
         }
 
         val body = response.body()
 
         if (body == null) {
             Log.w(TAG, "Response empty")
-            throw Exception("Response empty")
+            throw Exception()
         }
 
-        body
+        return body
     }
 
     companion object {
