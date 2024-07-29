@@ -5,7 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.scottishpower.data.dto.AlbumDTO
 import com.example.scottishpower.di.IoDispatcher
-import com.example.scottishpower.domain.AlbumUseCase
+import com.example.scottishpower.domain.GetAllAlbumsUseCase
 import com.example.scottishpower.util.State
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
@@ -18,7 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AlbumViewModel @Inject constructor(
     application: Application,
-    private val placeholder: AlbumUseCase,
+    private val getAllAlbums: GetAllAlbumsUseCase,
     @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) : AndroidViewModel(application) {
 
@@ -32,7 +32,7 @@ class AlbumViewModel @Inject constructor(
     private fun retrieveAlbums() {
         viewModelScope.launch(dispatcher) {
             try {
-                _albumListState.value = State.Success(placeholder.getAllAlbums())
+                _albumListState.value = State.Success(getAllAlbums.invoke())
             } catch (exception: Exception) {
                 _albumListState.value = State.Error(exception.message)
             }
