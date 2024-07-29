@@ -3,12 +3,10 @@ package com.example.scottishpower.ui.album
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.scottishpower.data.dto.AlbumDTO
-import com.example.scottishpower.di.IoDispatcher
+import com.example.scottishpower.data.entity.AlbumEntity
 import com.example.scottishpower.domain.GetAllAlbumsUseCase
 import com.example.scottishpower.util.State
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -21,8 +19,8 @@ class AlbumViewModel @Inject constructor(
     private val getAllAlbums: GetAllAlbumsUseCase
 ) : AndroidViewModel(application) {
 
-    private val _albumListState = MutableStateFlow<State<List<AlbumDTO>>>(State.Loading)
-    val albumListState: StateFlow<State<List<AlbumDTO>>> = _albumListState.asStateFlow()
+    private val _albumListState = MutableStateFlow<State<List<AlbumEntity>>>(State.Loading)
+    val albumListState: StateFlow<State<List<AlbumEntity>>> = _albumListState.asStateFlow()
 
     init {
         retrieveAlbums()

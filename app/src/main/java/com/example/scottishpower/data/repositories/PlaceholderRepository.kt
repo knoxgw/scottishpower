@@ -2,17 +2,30 @@ package com.example.scottishpower.data.repositories
 
 import android.util.Log
 import com.example.scottishpower.data.dto.AlbumDTO
+import com.example.scottishpower.data.dto.PhotoDTO
+import com.example.scottishpower.data.dto.UserDTO
 import com.example.scottishpower.data.repositories.api.PlaceholderApi
 import retrofit2.Call
 import javax.inject.Inject
 
 // todo better exception handling here
 class PlaceholderRepository @Inject constructor(private val api: PlaceholderApi) {
-    suspend fun getAllAlbums(): List<AlbumDTO> {
+    fun getAllAlbums(): List<AlbumDTO> {
+        Log.d(TAG, "Fetching all albums")
         return executeCall(api.getAllAlbums())
     }
 
-    private suspend fun <T> executeCall(call: Call<out T>): T {
+    fun getUserById(userId: String): List<UserDTO> {
+        Log.d(TAG, "Fetching user $userId")
+        return executeCall(api.getUserById(userId))
+    }
+
+    fun getAlbumPhotosById(albumId: String): List<PhotoDTO> {
+        Log.d(TAG, "Fetching photos for album $albumId")
+        return executeCall(api.getPhotosByAlbum(albumId))
+    }
+
+    private fun <T> executeCall(call: Call<out T>): T {
         val response = call.execute()
 
         if (!response.isSuccessful) {

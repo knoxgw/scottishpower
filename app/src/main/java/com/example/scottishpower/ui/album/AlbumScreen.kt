@@ -2,6 +2,7 @@ package com.example.scottishpower.ui.album
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -20,7 +21,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import coil.compose.AsyncImage
 import com.example.scottishpower.data.dto.AlbumDTO
+import com.example.scottishpower.data.entity.AlbumEntity
 import com.example.scottishpower.util.State
 
 const val ALBUM_ROUTE = "album_route"
@@ -46,7 +49,7 @@ fun NavGraphBuilder.albumScreen() {
                 }
 
                 is State.Success -> {
-                    AlbumList((albumListState as State.Success<List<AlbumDTO>>).contents)
+                    AlbumList((albumListState as State.Success<List<AlbumEntity>>).contents)
                 }
             }
         }
@@ -54,14 +57,14 @@ fun NavGraphBuilder.albumScreen() {
 }
 
 @Composable
-private fun AlbumList(albums: List<AlbumDTO>) {
+private fun AlbumList(albums: List<AlbumEntity>) {
     LazyColumn {
         items(albums, itemContent = { AlbumItem(album = it) })
     }
 }
 
 @Composable
-private fun AlbumItem(album: AlbumDTO) {
+private fun AlbumItem(album: AlbumEntity) {
     Card(
         modifier = Modifier
             .padding(horizontal = 8.dp, vertical = 8.dp)
@@ -69,10 +72,12 @@ private fun AlbumItem(album: AlbumDTO) {
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
         shape = RoundedCornerShape(corner = CornerSize(16.dp))
     ) {
-        Column {
-            Text(text = album.title)
-            Text(text = album.id.toString())
-            Text(text = album.userId.toString())
+        Row {
+            AsyncImage(model = album.thumbnailUrl, contentDescription = null)
+            Column {
+                Text(text = album.title)
+                Text(text = album.username)
+            }
         }
     }
 }
