@@ -26,6 +26,8 @@ import androidx.navigation.compose.composable
 import coil.compose.AsyncImage
 import com.example.scottishpower.R
 import com.example.scottishpower.data.entity.AlbumDetailEntity
+import com.example.scottishpower.ui.shared.ErrorMessage
+import com.example.scottishpower.ui.shared.Spinner
 import com.example.scottishpower.util.NavArgs
 import com.example.scottishpower.util.State
 import com.example.scottishpower.util.navigateWithArgs
@@ -39,20 +41,20 @@ fun NavController.navigateToAlbumDetail(albumId: Int) {
 fun NavGraphBuilder.albumDetailScreen() {
     composable(ALBUM_DETAIL_ROUTE) {
 
-        Box(modifier = Modifier.padding(8.dp, 8.dp).fillMaxWidth()) {
+        Box(modifier = Modifier
+            .padding(8.dp, 8.dp)
+            .fillMaxWidth()) {
             val albumDetailViewModel: AlbumDetailViewModel = hiltViewModel()
 
             val albumDetailState by albumDetailViewModel.albumDetailState.collectAsState()
 
             when (albumDetailState) {
                 is State.Error -> {
-                    Text("Error")
+                    ErrorMessage(message = (albumDetailState as? State.Error)?.message)
                 }
-
                 is State.Loading -> {
-                    Text("Loading")
+                    Spinner()
                 }
-
                 is State.Success -> {
                     Column(modifier = Modifier.fillMaxWidth()) {
                         (albumDetailState as? State.Success<AlbumDetailEntity>)?.contents?.let { detail ->
