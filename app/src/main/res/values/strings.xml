@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Scottish Power</string>
+
+    <string name="detail_user">User: %s</string>
+    <string name="detail_name">Name: %s</string>
+    <string name="detail_company">Company: %s</string>
 </resources>

@@ -2,14 +2,21 @@ package com.example.scottishpower.ui.albumdetail
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.os.bundleOf
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -17,6 +24,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import coil.compose.AsyncImage
+import com.example.scottishpower.R
 import com.example.scottishpower.data.entity.AlbumDetailEntity
 import com.example.scottishpower.util.NavArgs
 import com.example.scottishpower.util.State
@@ -31,7 +39,7 @@ fun NavController.navigateToAlbumDetail(albumId: Int) {
 fun NavGraphBuilder.albumDetailScreen() {
     composable(ALBUM_DETAIL_ROUTE) {
 
-        Box(modifier = Modifier.padding(8.dp, 8.dp)) {
+        Box(modifier = Modifier.padding(8.dp, 8.dp).fillMaxWidth()) {
             val albumDetailViewModel: AlbumDetailViewModel = hiltViewModel()
 
             val albumDetailState by albumDetailViewModel.albumDetailState.collectAsState()
@@ -46,7 +54,7 @@ fun NavGraphBuilder.albumDetailScreen() {
                 }
 
                 is State.Success -> {
-                    Column {
+                    Column(modifier = Modifier.fillMaxWidth()) {
                         (albumDetailState as? State.Success<AlbumDetailEntity>)?.contents?.let { detail ->
                             AlbumDetailsHeader(
                                 title = detail.title,
@@ -55,7 +63,9 @@ fun NavGraphBuilder.albumDetailScreen() {
                                 companyName = detail.companyName,
                                 companyCatchPhrase = detail.companyCatchPhrase
                             )
+                            Spacer(modifier = Modifier.height(8.dp) )
                             AlbumGallery(photoUrls = detail.photoUrls)
+                            Spacer(modifier = Modifier.height(16.dp) )
                         }
 
                     }
@@ -73,16 +83,19 @@ private fun AlbumDetailsHeader(
     companyName: String,
     companyCatchPhrase: String
 ) {
-    Text(text = title)
-    Text(text = username)
-    Text(text = name)
-    Text(text = companyName)
-    Text(text = companyCatchPhrase)
+    Text(text = title, textAlign = TextAlign.Center,
+        style = MaterialTheme.typography.titleLarge, modifier = Modifier.fillMaxWidth())
+    Text(text = stringResource(id = R.string.detail_user, username), style = MaterialTheme.typography.bodyMedium)
+    Text(text = stringResource(id = R.string.detail_name, name), style = MaterialTheme.typography.bodyMedium)
+    Text(text = stringResource(id = R.string.detail_company, companyName), style = MaterialTheme.typography.bodySmall)
+    Text(text = companyCatchPhrase, style = MaterialTheme.typography.bodySmall)
 }
 
 @Composable
 private fun AlbumGallery(photoUrls: List<String>) {
-    LazyRow {
+    LazyVerticalGrid(
+        columns = GridCells.Adaptive(minSize = 128.dp)
+    ) {
         items(photoUrls, itemContent = { AlbumGalleryItem(photoUrl = it) })
     }
 }
