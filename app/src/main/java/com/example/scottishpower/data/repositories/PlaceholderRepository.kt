@@ -5,7 +5,7 @@ import com.example.scottishpower.data.dto.AlbumDTO
 import com.example.scottishpower.data.dto.PhotoDTO
 import com.example.scottishpower.data.dto.UserDTO
 import com.example.scottishpower.data.repositories.api.PlaceholderApi
-import com.example.scottishpower.util.PlaceholderEmptyResponseException
+import com.example.scottishpower.util.PlaceholderMissingDataException
 import com.example.scottishpower.util.PlaceholderNetworkingException
 import retrofit2.Call
 import javax.inject.Inject
@@ -43,7 +43,7 @@ class PlaceholderRepository @Inject constructor(private val api: PlaceholderApi)
 
         if (body == null) {
             Log.w(TAG, "Response empty")
-            throw PlaceholderEmptyResponseException()
+            throw PlaceholderMissingDataException()
         }
 
         return body
