@@ -2,7 +2,7 @@
 
 ## Overview
 
-The app is a basic implementation of the interview task's requirements, with some small additions. Rather than simply displaying the contents of the Placeholder API's `/albums/` endpoint, I chained some calls together to show the author's username and a thumbnail from one of the pictures in the album. This unfortunately results in some overhead when launching the app; I believe the test API is likely a little slow or throttled, however I felt this was acceptable as it allowed me to flesh out the main screen with more interesting contents. Please be aware, however, that the app will take a few seconds to download all the data.
+The app is a basic implementation of the interview task's requirements, with some small additions. Rather than simply displaying the contents of the Placeholder API's `/albums/` endpoint, I chained some calls together to show the author's username and a thumbnail from one of the pictures in the album. This unfortunately results in some overhead when launching the app; I believe the test API is likely a little slow or throttled, however I felt this was acceptable as it allowed me to flesh out the main screen with more interesting contents. Please be aware, however, that the app will take a few seconds to download all the data. The API also seems a bit slow at downloading images, at least on my end.
 
 I expanded upon the sorting requirements and added buttons that allow the user to sort by username or title.
 
@@ -22,7 +22,7 @@ I also attempted to follow clean architecture principals which I believe have be
 
 ## Issues and potential improvements
 
-As mentioned, there is some overhead in downloading all the data when the app boots. The networking could have been improved to allow results to trickle in and individually render, which would be a better user experience than waiting for all results.
+As mentioned, there is some overhead in downloading all the data when the app boots. The networking could have been improved to allow results to trickle in and individually render, which would be a better user experience than waiting for all results. Additionally, some loading indicators for the individual images might have been useful to help assure the user they are downloading.
 
 Additionally, caching could have been implemented to improve performance. To do this, I would implement a local repository alongside the remote, and within the domain layer decide whether to load the local or remote data.
 
