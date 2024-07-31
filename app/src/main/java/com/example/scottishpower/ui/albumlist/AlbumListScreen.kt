@@ -24,6 +24,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -129,7 +130,8 @@ private fun AlbumItem(album: AlbumEntity, navigateToDetail: (Int) -> Unit) {
             AsyncImage(
                 model = album.thumbnailUrl,
                 contentDescription = null,
-                modifier = Modifier.fillMaxHeight()
+                modifier = Modifier.fillMaxHeight(),
+                placeholder = painterResource(R.drawable.thumbnail_placeholder)
             )
             Column(
                 modifier = Modifier
