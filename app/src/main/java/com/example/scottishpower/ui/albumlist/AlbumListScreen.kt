@@ -131,7 +131,8 @@ private fun AlbumItem(album: AlbumEntity, navigateToDetail: (Int) -> Unit) {
                 model = album.thumbnailUrl,
                 contentDescription = null,
                 modifier = Modifier.fillMaxHeight(),
-                placeholder = painterResource(R.drawable.thumbnail_placeholder)
+                placeholder = painterResource(R.drawable.thumbnail_placeholder),
+                error = painterResource(R.drawable.thumbnail_error)
             )
             Column(
                 modifier = Modifier
