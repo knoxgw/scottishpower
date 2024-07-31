@@ -2,7 +2,7 @@ package com.example.scottishpower.domain
 
 import com.example.scottishpower.data.entity.AlbumEntity
 import com.example.scottishpower.data.repositories.PlaceholderRepository
-import com.example.scottishpower.di.IoDispatcher
+import com.example.scottishpower.di.DispatcherModule.IoDispatcher
 import com.example.scottishpower.util.PlaceholderMissingDataException
 import com.example.scottishpower.util.firstOrThrow
 import kotlinx.coroutines.CoroutineDispatcher

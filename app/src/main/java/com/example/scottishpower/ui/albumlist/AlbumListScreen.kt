@@ -1,6 +1,5 @@
 package com.example.scottishpower.ui.albumlist
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,13 +17,11 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -79,7 +76,6 @@ fun NavGraphBuilder.albumListScreen(navigateToDetail: (Int) -> Unit) {
 
 @Composable
 private fun SortBar(selectedSort: SortType, sortCallback: (SortType) -> Unit) {
-    // todo icons here, indicate selected sort
     Row(horizontalArrangement = Arrangement.Absolute.SpaceEvenly, verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
         Text(text = stringResource(id = R.string.list_sort_by))
             FilterChip(
