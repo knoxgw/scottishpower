@@ -1,5 +1,6 @@
 package com.example.scottishpower.ui.albumlist
 
+import androidx.annotation.VisibleForTesting
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,6 +23,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -36,6 +38,7 @@ import com.example.scottishpower.data.entity.AlbumEntity
 import com.example.scottishpower.ui.shared.ErrorMessage
 import com.example.scottishpower.ui.shared.Spinner
 import com.example.scottishpower.util.State
+import com.example.scottishpower.util.TestTag
 
 const val ALBUM_LIST_ROUTE = "album_list_route"
 
@@ -55,9 +58,11 @@ fun NavGraphBuilder.albumListScreen(navigateToDetail: (Int) -> Unit) {
                 is State.Error -> {
                     ErrorMessage(message = (albumListState as? State.Error)?.message)
                 }
+
                 is State.Loading -> {
                     Spinner()
                 }
+
                 is State.Success -> {
                     Column {
                         SortBar(sortState) {
@@ -75,29 +80,36 @@ fun NavGraphBuilder.albumListScreen(navigateToDetail: (Int) -> Unit) {
 }
 
 @Composable
-private fun SortBar(selectedSort: SortType, sortCallback: (SortType) -> Unit) {
-    Row(horizontalArrangement = Arrangement.Absolute.SpaceEvenly, verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
+@VisibleForTesting
+fun SortBar(selectedSort: SortType, sortCallback: (SortType) -> Unit) {
+    Row(
+        horizontalArrangement = Arrangement.Absolute.SpaceEvenly,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.fillMaxWidth()
+    ) {
         Text(text = stringResource(id = R.string.list_sort_by))
-            FilterChip(
-                onClick = { sortCallback.invoke(SortType.Title(!selectedSort.ascending)) },
-                label = {
-                    Text(stringResource(R.string.sort_type_title))
-                },
-                selected = selectedSort is SortType.Title,
-            )
-            FilterChip(
-                onClick = { sortCallback.invoke(SortType.Username(!selectedSort.ascending)) },
-                label = {
-                    Text(stringResource(R.string.sort_type_username))
-                },
-                selected = selectedSort is SortType.Username,
-            )
-        }
+        FilterChip(
+            onClick = { sortCallback.invoke(SortType.Title(selectedSort !is SortType.Title || !selectedSort.ascending)) },
+            label = {
+                Text(stringResource(R.string.sort_type_title))
+            },
+            selected = selectedSort is SortType.Title,
+            modifier = Modifier.testTag(TestTag.TITLE_SORT_CHIP)
+        )
+        FilterChip(
+            onClick = { sortCallback.invoke(SortType.Username(selectedSort !is SortType.Username || !selectedSort.ascending)) },
+            label = {
+                Text(stringResource(R.string.sort_type_username))
+            },
+            selected = selectedSort is SortType.Username,
+            modifier = Modifier.testTag(TestTag.USERNAME_SORT_CHIP)
+        )
+    }
 }
 
 @Composable
 private fun AlbumList(albums: List<AlbumEntity>, navigateToDetail: (Int) -> Unit) {
-    LazyColumn {
+    LazyColumn(Modifier.testTag(TestTag.ALBUM_LIST_CONTAINER)) {
         items(albums, itemContent = { AlbumItem(album = it, navigateToDetail) })
     }
 }
